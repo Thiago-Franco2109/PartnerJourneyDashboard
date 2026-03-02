@@ -85,8 +85,8 @@ function App() {
       try {
         await fetchPartners(); // simulate load
 
-        // Fetch logos from Google Sheets
-        const sheetsUrl = import.meta.env.VITE_SHEETS_URL;
+        // Fetch logos from Google Sheets (using hardcoded fallback to simplify live deploy)
+        const sheetsUrl = import.meta.env.VITE_SHEETS_URL || 'https://docs.google.com/spreadsheets/d/1Y5_TXSIi2RFyd_uUMXcWLQTQ52Oy8kCwYZrnlj6a5Xk/export?format=csv';
         if (sheetsUrl) {
           const response = await fetch(sheetsUrl);
           const csvText = await response.text();
