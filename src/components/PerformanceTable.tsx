@@ -87,17 +87,17 @@ export default function PerformanceTable({ data, sortConfig, requestSort, onRowC
                                         className={`hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors cursor-pointer group ${isTopPriority ? 'bg-red-50/30 dark:bg-red-900/10' : ''}`}
                                         onClick={() => onRowClick(row)}
                                     >
-                                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-slate-500 dark:text-slate-400 sm:pl-6 group-hover:text-primary transition-colors relative">
+                                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-base font-semibold text-slate-700 dark:text-slate-300 sm:pl-6 group-hover:text-primary transition-colors relative">
                                             {isTopPriority && <div className="absolute left-0 top-0 bottom-0 w-1 bg-red-500"></div>}
                                             {row.cidade}
                                         </td>
                                         <td className="whitespace-nowrap px-3 py-4 text-sm font-medium text-slate-900 dark:text-slate-200 group-hover:text-primary transition-colors">
                                             <div className="flex items-center gap-3">
                                                 {row.logo_url ? (
-                                                    <img src={row.logo_url} alt={row.estabelecimento} className="size-8 rounded-full border border-slate-100 dark:border-slate-700 shadow-sm object-cover" />
+                                                    <img src={row.logo_url} alt={row.estabelecimento} className="size-12 rounded-full border border-slate-100 dark:border-slate-700 shadow-sm object-cover" />
                                                 ) : (
-                                                    <div className="size-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400">
-                                                        <span className="material-symbols-outlined text-[18px]">store</span>
+                                                    <div className="size-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400">
+                                                        <span className="material-symbols-outlined text-[24px]">store</span>
                                                     </div>
                                                 )}
                                                 {row.estabelecimento}
@@ -112,10 +112,10 @@ export default function PerformanceTable({ data, sortConfig, requestSort, onRowC
                                             </span>
                                         </td>
                                         <td className="whitespace-nowrap px-3 py-4 text-sm text-center text-slate-500 dark:text-slate-400">{row.dias_desde_lancamento}</td>
-                                        <td className="whitespace-nowrap px-3 py-4 text-sm text-center">
-                                            <span className="font-semibold text-slate-900 dark:text-white">{row.total_pedidos}</span>
-                                            <span className="text-slate-400 mx-1">/</span>
-                                            <span className="text-slate-500">{row.pedidos_esperados}</span>
+                                        <td className="whitespace-nowrap px-3 py-4 text-center">
+                                            <span className="font-bold text-lg text-slate-900 dark:text-white">{row.total_pedidos}</span>
+                                            <span className="text-slate-400 mx-1 text-sm">/</span>
+                                            <span className="text-slate-500 text-sm">{row.pedidos_esperados}</span>
                                         </td>
                                         <td className="whitespace-nowrap px-3 py-4 text-sm text-center font-medium text-slate-700 dark:text-slate-300">
                                             {row.indice_desempenho.toFixed(2)}

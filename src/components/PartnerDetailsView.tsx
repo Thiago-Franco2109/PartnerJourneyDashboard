@@ -110,10 +110,10 @@ export default function PartnerDetailsView({ partner, onBack, onSaveOrders, onCl
                     </button>
                     <div className="flex items-center gap-4">
                         {partner.logo_url ? (
-                            <img src={partner.logo_url} alt={partner.estabelecimento} className="size-16 rounded-xl border border-slate-200 dark:border-slate-700 shadow-md object-cover" />
+                            <img src={partner.logo_url} alt={partner.estabelecimento} className="size-24 rounded-xl border border-slate-200 dark:border-slate-700 shadow-md object-cover" />
                         ) : (
-                            <div className="size-16 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 border border-slate-200 dark:border-slate-700">
-                                <span className="material-symbols-outlined text-3xl">store</span>
+                            <div className="size-24 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 border border-slate-200 dark:border-slate-700">
+                                <span className="material-symbols-outlined text-5xl">store</span>
                             </div>
                         )}
                         <div>

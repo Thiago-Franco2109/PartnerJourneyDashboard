@@ -95,12 +95,13 @@ function App() {
           const lines = csvText.split('\n').filter(line => line.trim() !== '');
           const mapping: Record<string, string> = {};
 
-          // Skip header
-          for (let i = 1; i < lines.length; i++) {
+          // Process lines
+          for (let i = 0; i < lines.length; i++) {
             const parts = lines[i].split(',');
             if (parts.length >= 4) {
               const name = parts[1].trim();
               const url = parts[3].trim();
+              if (name === 'loja_nome' || name === 'Estabelecimento') continue; // skip header if present
               mapping[name] = url;
             }
           }
