@@ -17,7 +17,7 @@ function App() {
   const [currentView, setCurrentView] = useState<'dashboard' | 'settings'>('dashboard');
   const [dateFilter, setDateFilter] = useState('');
   const [cityFilter, setCityFilter] = useState('');
-  const [sortConfig, setSortConfig] = useState<SortConfig>({ key: 'priority_stars', direction: 'desc' });
+  const [sortConfig, setSortConfig] = useState<SortConfig>({ key: 'indice_desempenho', direction: 'asc' });
   const [selectedRow, setSelectedRow] = useState<EnrichedPerformanceRow | null>(null);
   const [logoMapping, setLogoMapping] = useState<Record<string, string>>({});
 
