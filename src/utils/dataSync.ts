@@ -121,6 +121,7 @@ function validateAndMapData(rawData: any[]): PerformanceRow[] {
         const status = (row['status'] || row['Status'] || 'ativo').toLowerCase() as 'ativo' | 'suspenso';
         const lancamento = row['lancamento'] || row['Lancamento'] || row['Lançamento'] || '';
         const analista = row['analista'] || row['Analista'] || row['Gestor'] || 'Desconhecido';
+        const logo_url = row['logo_url'] || row['Logo_URL'] || '';
 
         // Treat empty week values as 0
         const parseWeek = (val: any) => {
@@ -143,7 +144,8 @@ function validateAndMapData(rawData: any[]): PerformanceRow[] {
             week_2,
             week_3,
             week_4,
-            analista
+            analista,
+            ...(logo_url ? { logo_url } : {})
         };
     }).filter(row => row.estabelecimento !== 'Desconhecido'); // Filter out invalid rows mapped poorly
 }

@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale/pt-BR';
 import Header from './components/Header';
@@ -21,7 +21,6 @@ function App() {
   const [managerFilter, setManagerFilter] = useState('');
   const [sortConfig, setSortConfig] = useState<SortConfig>({ key: 'indice_desempenho', direction: 'asc' });
   const [selectedRow, setSelectedRow] = useState<EnrichedPerformanceRow | null>(null);
-  const [logoMapping, setLogoMapping] = useState<Record<string, string>>({});
 
   const sheetsDataUrl = import.meta.env.VITE_SHEETS_DATA_URL || DATA_SOURCE.url;
   const { data: syncData, isLoading: loadingSync, error: syncError, lastSyncTime, isUsingCache, refreshData } = useDataSync({
@@ -40,10 +39,9 @@ function App() {
     syncData.map(row => {
       const override = overrides[row.estabelecimento];
       const merged = override ? { ...row, ...override } : row;
-      const logoUrl = logoMapping[row.estabelecimento];
-      return enrichPartnerData(merged, logoUrl);
+      return enrichPartnerData(merged);
     }),
-    [syncData, overrides, logoMapping]  // recompute whenever sync, overrides, or logos change
+    [syncData, overrides]
   );
 
   // Extract unique cities and managers
@@ -92,38 +90,7 @@ function App() {
     setSortConfig({ key, direction });
   };
 
-  // Load Logos
-  useEffect(() => {
-    async function loadLogos() {
-      try {
-        // Fetch logos from Google Sheets (using hardcoded fallback to simplify live deploy)
-        const sheetsUrl = import.meta.env.VITE_SHEETS_URL || 'https://docs.google.com/spreadsheets/d/1Y5_TXSIi2RFyd_uUMXcWLQTQ52Oy8kCwYZrnlj6a5Xk/export?format=csv';
-        if (sheetsUrl) {
-          const response = await fetch(sheetsUrl);
-          const csvText = await response.text();
 
-          // Simple CSV parsing (assuming headers: loja_id,loja_nome,logo_arquivo,logo_url,cms_arte_url)
-          const lines = csvText.split('\n').filter(line => line.trim() !== '');
-          const mapping: Record<string, string> = {};
-
-          // Process lines
-          for (let i = 0; i < lines.length; i++) {
-            const parts = lines[i].split(',');
-            if (parts.length >= 4) {
-              const name = parts[1].trim();
-              const url = parts[3].trim();
-              if (name === 'loja_nome' || name === 'Estabelecimento') continue; // skip header if present
-              mapping[name] = url;
-            }
-          }
-          setLogoMapping(mapping);
-        }
-      } catch (error) {
-        console.error("Failed to load logos", error);
-      }
-    }
-    loadLogos();
-  }, []);
 
   // Summary Metrics Calculation
   const totalPartners = filteredTableData.length;
