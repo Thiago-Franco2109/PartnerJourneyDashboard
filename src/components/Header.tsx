@@ -1,9 +1,11 @@
 interface HeaderProps {
     currentView: 'dashboard' | 'settings';
     onNavigate: (view: 'dashboard' | 'settings') => void;
+    searchQuery: string;
+    setSearchQuery: (query: string) => void;
 }
 
-export default function Header({ currentView, onNavigate }: HeaderProps) {
+export default function Header({ currentView, onNavigate, searchQuery, setSearchQuery }: HeaderProps) {
     return (
         <header className="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-10 py-3 shadow-sm z-10">
             <div className="flex items-center gap-8">
@@ -23,7 +25,8 @@ export default function Header({ currentView, onNavigate }: HeaderProps) {
                         <input
                             className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-0 border-none bg-slate-100 dark:bg-slate-800 focus:border-none h-full placeholder:text-slate-500 px-4 rounded-l-none border-l-0 pl-2 text-sm font-normal leading-normal"
                             placeholder="Buscar parceiro..."
-                            defaultValue=""
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
                         />
                     </div>
                 </label>

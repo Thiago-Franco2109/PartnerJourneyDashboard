@@ -11,6 +11,7 @@ export type PerformanceRow = {
     week_3: number;
     week_4: number;
     logo_url?: string;
+    analista?: string;
 };
 
 export type SortConfig = {

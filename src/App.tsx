@@ -15,8 +15,10 @@ import { useDataSync } from './hooks/useDataSync';
 
 function App() {
   const [currentView, setCurrentView] = useState<'dashboard' | 'settings'>('dashboard');
-  const [dateFilter, setDateFilter] = useState('');
   const [cityFilter, setCityFilter] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [priorityFilter, setPriorityFilter] = useState('');
+  const [managerFilter, setManagerFilter] = useState('');
   const [sortConfig, setSortConfig] = useState<SortConfig>({ key: 'indice_desempenho', direction: 'asc' });
   const [selectedRow, setSelectedRow] = useState<EnrichedPerformanceRow | null>(null);
   const [logoMapping, setLogoMapping] = useState<Record<string, string>>({});
@@ -44,14 +46,17 @@ function App() {
     [syncData, overrides, logoMapping]  // recompute whenever sync, overrides, or logos change
   );
 
-  // Extract unique cities
+  // Extract unique cities and managers
   const uniqueCities = Array.from(new Set(enrichedData.map(row => row.cidade))).sort();
+  const uniqueManagers = Array.from(new Set(enrichedData.map(row => row.analista || 'Desconhecido'))).filter(m => m !== 'Desconhecido').sort();
 
   // Filter Data
   let filteredTableData = enrichedData.filter((row: EnrichedPerformanceRow) => {
     let matches = true;
-    if (dateFilter && row.lancamento !== dateFilter) matches = false;
     if (cityFilter && row.cidade !== cityFilter) matches = false;
+    if (searchQuery && !row.estabelecimento.toLowerCase().includes(searchQuery.toLowerCase())) matches = false;
+    if (priorityFilter && row.priority_stars.toString() !== priorityFilter) matches = false;
+    if (managerFilter && row.analista !== managerFilter) matches = false;
     return matches;
   });
 
@@ -152,7 +157,7 @@ function App() {
 
   return (
     <div className="flex min-h-screen w-full flex-col overflow-x-hidden relative bg-white dark:bg-slate-900">
-      <Header currentView={currentView} onNavigate={setCurrentView} />
+      <Header currentView={currentView} onNavigate={setCurrentView} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <main className="flex flex-1 flex-col xl:flex-row h-full">
         {currentView === 'settings' ? (
           <SettingsView />
@@ -217,11 +222,14 @@ function App() {
                 </div>
 
                 <FilterToolbar
-                  dateFilter={dateFilter}
-                  setDateFilter={setDateFilter}
                   cityFilter={cityFilter}
                   setCityFilter={setCityFilter}
                   cities={uniqueCities}
+                  priorityFilter={priorityFilter}
+                  setPriorityFilter={setPriorityFilter}
+                  managerFilter={managerFilter}
+                  setManagerFilter={setManagerFilter}
+                  managers={uniqueManagers}
                 />
 
                 {loadingSync ? (

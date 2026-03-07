@@ -1,0 +1,65 @@
+# Relatório de Entrega (Handover) - Partner Journey Dashboard
+
+Este documento consolida todo o trabalho realizado no repositório anterior para facilitar a replicação e continuidade do projeto no novo repositório da LabCinco.
+
+---
+
+## 1. Análise Geral do Projeto (Estado Inicial)
+
+O projeto é um Dashboard de monitoramento da jornada de parceiros (28 dias).
+
+### Pontos Identificados
+
+- **UI/UX**: Design moderno (Tailwind + Material Symbols), mas com problemas de responsividade em tabelas no mobile.
+- **Funcionalidades**: Muitos elementos (filtros, busca, botões) eram apenas visuais (placeholders).
+- **Dados**: Erro persistente (404) na sincronização com Google Sheets devido a URLs não configuradas.
+- **Ambiente**: Problemas de execução local (esbuild) devido a caminhos com espaços e sincronização iCloud.
+
+---
+
+## 2. Alterações Implementadas (Pronto para Replicar)
+
+Foi realizada uma limpeza na interface e na lógica do `App.tsx` para focar no que é funcional.
+
+### Arquivos Modificados
+
+1. **`src/App.tsx`**:
+    - Removido estado `dateFilter`.
+    - Removida lógica de filtragem por data (`row.lancamento`).
+    - Simplificada a passagem de props para o toolbar.
+2. **`src/components/FilterToolbar.tsx`**:
+    - Removido input de "Data de Ativação".
+    - Removidos botões de `filter_list` e `download` (inativos).
+    - Removidas props e tipos relacionados ao filtro de data.
+
+---
+
+## 3. Guia de Replicação para o Novo Agente
+
+Para replicar o trabalho no novo repositório:
+
+### Passo 1: Limpeza de UI
+
+Remover o filtro de data e botões extras no `FilterToolbar.tsx`. Certifique-se de que a interface de props do componente não peça mais `dateFilter`.
+
+### Passo 2: Lógica de Estado
+
+No `App.tsx`, elimine o `useState` de data e limpe a função `.filter()` que processa os dados da tabela para ignorar o campo de data, mantendo apenas o filtro de cidade e (futuramente) a busca.
+
+### Passo 3: Próximas Prioridades (Pendentes)
+
+1. **Sincronização**: Configurar a `VITE_SHEETS_URL` correta para carregar logos e dados dinâmicos.
+2. **Busca**: Vincular o input de pesquisa do `Header.tsx` à filtragem da tabela.
+3. **Filtros Reais**: Implementar a lógica para os seletores de "Prioridade" e "Gestor".
+
+---
+
+## 4. Observação Técnica Importante
+
+O erro de `esbuild` no projeto anterior foi causado pelo caminho do arquivo no iCloud. No novo repositório, garanta que:
+
+1. O caminho não tenha espaços (ex: use `/Users/usuario/Projetos/dashboard`).
+2. Execute `npm install` antes do primeiro `npm run dev`.
+
+---
+*Relatório gerado em 07/03/2026 por Antigravity.*
