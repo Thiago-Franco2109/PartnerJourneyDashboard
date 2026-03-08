@@ -140,19 +140,35 @@ export default function PartnerDetailsView({ partner, onBack, onSaveOrders, onCl
                         </div>
                     </div>
                 </div>
-                {partner.id && (
-                    <div>
-                        <a
-                            href={`https://admin.bigou.com.br/estabelecimento/cadastro/${partner.id}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-2 px-4 py-2 bg-slate-900 hover:bg-slate-800 dark:bg-indigo-600 dark:hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl shadow-sm hover:shadow-md transition-all active:scale-95 border border-transparent"
-                        >
-                            <span className="material-symbols-outlined text-[18px]">launch</span>
-                            Abrir no CMS (Bigou)
-                        </a>
+                <div className="flex flex-col items-end gap-2">
+                    <a
+                        href={partner.id ? `https://admin.bigou.com.br/estabelecimento/cadastro/${partner.id}` : '#'}
+                        target={partner.id ? "_blank" : undefined}
+                        rel={partner.id ? "noopener noreferrer" : undefined}
+                        onClick={(e) => !partner.id && e.preventDefault()}
+                        className={`flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-xl shadow-sm transition-all border border-transparent ${partner.id
+                                ? "bg-slate-900 hover:bg-slate-800 dark:bg-indigo-600 dark:hover:bg-indigo-700 text-white active:scale-95 shadow-md"
+                                : "bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed opacity-70"
+                            }`}
+                    >
+                        <span className="material-symbols-outlined text-[18px]">launch</span>
+                        Abrir no CMS (Bigou)
+                    </a>
+
+                    <div className="flex items-center gap-1.5 px-2 py-1 rounded-md">
+                        {partner.id ? (
+                            <>
+                                <span className="material-symbols-outlined text-[14px] text-green-500">check_circle</span>
+                                <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400">ID: {partner.id}</span>
+                            </>
+                        ) : (
+                            <>
+                                <span className="material-symbols-outlined text-[14px] text-amber-500">warning</span>
+                                <span className="text-[11px] font-medium text-amber-600 dark:text-amber-500 italic">ID não cadastrado na planilha</span>
+                            </>
+                        )}
                     </div>
-                )}
+                </div>
             </div>
 
             {/* Content */}
