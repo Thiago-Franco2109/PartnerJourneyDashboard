@@ -1,22 +1,22 @@
+import { NavLink } from 'react-router-dom';
+
 interface HeaderProps {
-    currentView: 'dashboard' | 'settings';
-    onNavigate: (view: 'dashboard' | 'settings') => void;
     searchQuery: string;
     setSearchQuery: (query: string) => void;
 }
 
-export default function Header({ currentView, onNavigate, searchQuery, setSearchQuery }: HeaderProps) {
+export default function Header({ searchQuery, setSearchQuery }: HeaderProps) {
     return (
         <header className="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-10 py-3 shadow-sm z-10">
             <div className="flex items-center gap-8">
-                <div className="flex items-center gap-4 text-slate-900 dark:text-white">
+                <NavLink to="/" className="flex items-center gap-4 text-slate-900 dark:text-white hover:opacity-80 transition-opacity">
                     <div className="size-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
                         <span className="material-symbols-outlined">monitoring</span>
                     </div>
                     <h2 className="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">
                         CS Partner Journey
                     </h2>
-                </div>
+                </NavLink>
                 <label className="flex flex-col min-w-40 !h-10 max-w-64">
                     <div className="flex w-full flex-1 items-stretch rounded-lg h-full">
                         <div className="text-slate-500 flex border-none bg-slate-100 dark:bg-slate-800 items-center justify-center pl-4 rounded-l-lg border-r-0">
@@ -33,20 +33,24 @@ export default function Header({ currentView, onNavigate, searchQuery, setSearch
             </div>
             <div className="flex flex-1 justify-end gap-8">
                 <div className="hidden md:flex items-center gap-9">
-                    <button
-                        onClick={() => onNavigate('dashboard')}
-                        className={`text-sm font-medium leading-normal transition-colors ${currentView === 'dashboard' ? 'text-primary' : 'text-slate-500 hover:text-primary dark:text-slate-400'}`}
+                    <NavLink
+                        to="/"
+                        className={({ isActive }) =>
+                            `text-sm font-medium leading-normal transition-colors ${isActive ? 'text-primary' : 'text-slate-500 hover:text-primary dark:text-slate-400'}`
+                        }
                     >
                         Dashboard
-                    </button>
+                    </NavLink>
                     <button className="text-slate-500 dark:text-slate-400 text-sm font-medium leading-normal hover:text-primary transition-colors cursor-not-allowed">Parceiros</button>
                     <button className="text-slate-500 dark:text-slate-400 text-sm font-medium leading-normal hover:text-primary transition-colors cursor-not-allowed">Relatórios</button>
-                    <button
-                        onClick={() => onNavigate('settings')}
-                        className={`text-sm font-medium leading-normal transition-colors ${currentView === 'settings' ? 'text-primary' : 'text-slate-500 hover:text-primary dark:text-slate-400'}`}
+                    <NavLink
+                        to="/configuracoes"
+                        className={({ isActive }) =>
+                            `text-sm font-medium leading-normal transition-colors ${isActive ? 'text-primary' : 'text-slate-500 hover:text-primary dark:text-slate-400'}`
+                        }
                     >
                         Configurações
-                    </button>
+                    </NavLink>
                 </div>
                 <div
                     className="bg-center bg-no-repeat bg-cover rounded-full size-10 border border-slate-200 dark:border-slate-700"
