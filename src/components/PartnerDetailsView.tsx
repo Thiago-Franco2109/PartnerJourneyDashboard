@@ -140,6 +140,19 @@ export default function PartnerDetailsView({ partner, onBack, onSaveOrders, onCl
                         </div>
                     </div>
                 </div>
+                {partner.id && (
+                    <div>
+                        <a
+                            href={`https://admin.bigou.com.br/estabelecimento/cadastro/${partner.id}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 px-4 py-2 bg-slate-900 hover:bg-slate-800 dark:bg-indigo-600 dark:hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl shadow-sm hover:shadow-md transition-all active:scale-95 border border-transparent"
+                        >
+                            <span className="material-symbols-outlined text-[18px]">launch</span>
+                            Abrir no CMS (Bigou)
+                        </a>
+                    </div>
+                )}
             </div>
 
             {/* Content */}

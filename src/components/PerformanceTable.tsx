@@ -2,6 +2,7 @@ import { getStarColor, type EnrichedPerformanceRow } from '../utils/calculations
 
 export type PerformanceRow = {
     cidade: string;
+    id?: string;
     estabelecimento: string;
     status: string;
     lancamento: string;
@@ -10,6 +11,7 @@ export type PerformanceRow = {
     week_2: number;
     week_3: number;
     week_4: number;
+    acessos?: number;
     logo_url?: string;
     analista?: string;
 };
@@ -63,6 +65,9 @@ export default function PerformanceTable({ data, sortConfig, requestSort, onRowC
                                 <th scope="col" className="px-3 py-3.5 text-center text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors" onClick={() => requestSort('dias_desde_lancamento')}>
                                     Dias Ativo {renderSortIcon('dias_desde_lancamento')}
                                 </th>
+                                <th scope="col" className="px-3 py-3.5 text-center text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors" onClick={() => requestSort('acessos')}>
+                                    Acessos (30d) {renderSortIcon('acessos')}
+                                </th>
                                 <th scope="col" className="px-3 py-3.5 text-center text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors" onClick={() => requestSort('total_pedidos')}>
                                     Pedidos {renderSortIcon('total_pedidos')}
                                 </th>
@@ -113,6 +118,9 @@ export default function PerformanceTable({ data, sortConfig, requestSort, onRowC
                                             </span>
                                         </td>
                                         <td className="whitespace-nowrap px-3 py-4 text-sm text-center text-slate-500 dark:text-slate-400">{row.dias_desde_lancamento}</td>
+                                        <td className="whitespace-nowrap px-3 py-4 text-sm text-center font-medium text-slate-700 dark:text-slate-300">
+                                            {row.acessos || '-'}
+                                        </td>
                                         <td className="whitespace-nowrap px-3 py-4 text-center">
                                             <span className="font-bold text-lg text-slate-900 dark:text-white">{row.total_pedidos}</span>
                                             <span className="text-slate-400 mx-1 text-sm">/</span>

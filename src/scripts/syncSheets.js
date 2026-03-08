@@ -54,6 +54,44 @@ async function fetchLogos() {
     }
 }
 
+// ---------- Fetch Analytics from the new spreadsheet ----------
+async function fetchAnalytics(token) {
+    console.log("  ↳ Buscando dados de acessos (Analytics)...");
+    try {
+        const url = "https://docs.google.com/spreadsheets/d/1fSmujBzlFtu4ZTuTl5v2nUcFwL3uol3QFqRrzEUULEA/gviz/tq?tqx=out:csv&gid=1132787546";
+        const response = await fetch(url, {
+            headers: { Authorization: `Bearer ${token}` },
+            redirect: "follow",
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status} ${response.statusText}`);
+        }
+
+        const csvText = await response.text();
+        const rows = parseCSV(csvText);
+
+        const mapping = {};
+        // Skip header row
+        for (let i = 1; i < rows.length; i++) {
+            const row = rows[i];
+            if (row.length >= 3) {
+                const lojaPadronizada = row[2].trim().toLowerCase();
+                const acessos = parseInt(row[1], 10) || 0;
+                if (lojaPadronizada) {
+                    mapping[lojaPadronizada] = acessos;
+                }
+            }
+        }
+
+        console.log(`  ↳ ${Object.keys(mapping).length} registros de acessos encontrados`);
+        return mapping;
+    } catch (err) {
+        console.warn("  ⚠️ Não foi possível carregar dados de acessos:", err.message);
+        return {};
+    }
+}
+
 // ---------- Parse CSV (handles quoted fields with commas) ----------
 function parseCSV(csvText) {
     const rows = [];
@@ -135,6 +173,9 @@ async function syncSheets() {
         // Fetch logos
         const logoMapping = await fetchLogos();
 
+        // Fetch analytics
+        const analyticsMapping = await fetchAnalytics(token);
+
         // Map CSV rows to data objects
         // Columns: A:cidade, B:id, C:estabelecimento, D:status, E:lancamento, F:?(skip), G:week_1, H:week_2, I:week_3, J:week_4
         const mappedData = rows
@@ -142,6 +183,7 @@ async function syncSheets() {
                 const estabelecimento = row[2] || "";
                 const logoUrl =
                     logoMapping[estabelecimento.toLowerCase()] || "";
+                const acessos = analyticsMapping[estabelecimento.toLowerCase()] || 0;
 
                 return {
                     cidade: row[0] || "",
@@ -153,6 +195,7 @@ async function syncSheets() {
                     week_2: parseInt(row[7]) || 0,
                     week_3: parseInt(row[8]) || 0,
                     week_4: parseInt(row[9]) || 0,
+                    acessos,
                     ...(logoUrl ? { logo_url: logoUrl } : {}),
                 };
             })

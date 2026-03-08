@@ -122,6 +122,7 @@ function validateAndMapData(rawData: any[]): PerformanceRow[] {
         const lancamento = row['lancamento'] || row['Lancamento'] || row['Lançamento'] || '';
         const analista = row['analista'] || row['Analista'] || row['Gestor'] || 'Desconhecido';
         const logo_url = row['logo_url'] || row['Logo_URL'] || '';
+        const acessos = row['acessos'] || 0;
 
         // Treat empty week values as 0
         const parseWeek = (val: any) => {
@@ -144,6 +145,7 @@ function validateAndMapData(rawData: any[]): PerformanceRow[] {
             week_2,
             week_3,
             week_4,
+            acessos,
             analista,
             ...(logo_url ? { logo_url } : {})
         };
